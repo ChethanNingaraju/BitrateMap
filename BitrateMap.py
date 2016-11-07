@@ -83,16 +83,16 @@ for numFile in range(0, len(inCSVfile)):
 x_axis = list(range(0,len(bits_per_frame[0])));
 if is_overlay == 0:
     fig = plt.figure();
+    axes = plt.gca();
+    ##For now remove the top 1% and bottom 1% as outliers
+    axes.set_ylim([np.percentile(bits_per_frame[0],1),np.percentile(bits_per_frame[0],99)]);
     for i in range(0 , len(inCSVfile)):
         ax = plt.subplot(len(inCSVfile), 1 , i+1);
-        ax.plot(x_axis, [x if x != 0 else None for x in bits_per_frame[i]]);
-    '''
-    for numFile in range(0, len(inCSVfile)):
-        ax1 = fig.add_subplot(211);
-        ax2 = fig.add_subplot(212);
-        ax1.plot(x_axis, [x if x != 0 else None for x in bits_per_frame[0]]);
-        ax2.plot(x_axis, [x if x != 0 else None for x in bits_per_frame[1]]);
-        '''
+        ax.plot(x_axis, [x if x != 0 else None for x in bits_per_frame[i]], linestyle='-', label = inCSVfile[i]);
+        plt.title('Frame Bit Consumption');
+        plt.ylabel('Frame Size (Bytes)');
+        plt.xlabel('Frame numbers');
+        legend = plt.legend();
     plt.show();
 else:
     ##Figure for bitrate plot
@@ -102,6 +102,9 @@ else:
     axes.set_ylim([np.percentile(bits_per_frame[0],1),np.percentile(bits_per_frame[0],99)]);
     for i in range(0, len(inCSVfile)):
         plt.plot(x_axis,[x if x != 0 else None for x in bits_per_frame[i]], linestyle='-', label = inCSVfile[i]);
+    plt.title('Frame Bit Consumption');
+    plt.ylabel('Frame Size (Bytes)');
+    plt.xlabel('Frame numbers');
     legend= plt.legend();
     plt.show();
     ##Figure for delay plot
@@ -111,5 +114,8 @@ else:
     #axes.set_ylim([np.percentile(bits_per_frame[0], 1), np.percentile(bits_per_frame[0], 99)]);
     for i in range(0, len(inCSVfile)):
         plt.plot(x_axis, delay_per_frame[i], linestyle='-', label=inCSVfile[i]);
+        plt.title('Frame Delay Plot');
+        plt.ylabel('Delay (ms)');
+        plt.xlabel('Frame numbers');
     legend = plt.legend();
     plt.show();
